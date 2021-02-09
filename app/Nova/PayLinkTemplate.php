@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
@@ -24,9 +25,21 @@ class PayLinkTemplate extends Resource {
         ->rules(["required"])
         ->sortable(),
 
+      Number::make('Amount',)
+        ->rules(["required"])
+        ->sortable(),
+
       BelongsTo::make("Server"),
 
-      Text::make('Link')
+      Text::make('Uuid')
+        ->displayUsing(function () {
+          $url = route('pay.template', $this->uuid);
+
+          return "<a target='_blank' href='$url' class='no-underline dim text-primary font-bold'>
+                    {$this->uuid}
+                  </a>";
+        })
+        ->asHtml()
         ->hideWhenUpdating()
         ->hideWhenCreating(),
 

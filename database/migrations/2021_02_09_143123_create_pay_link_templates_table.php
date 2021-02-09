@@ -15,7 +15,8 @@ class CreatePayLinkTemplatesTable extends Migration {
       $table->id();
       $table->string("steam_id");
       $table->boolean("active")->default(true);
-      $table->string("link")->nullable();
+      $table->string("uuid")->nullable();
+      $table->integer("amount")->nullable();
       $table->unsignedBigInteger("server_id");
       $table->foreign("server_id")->references("id")->on("servers")->onDelete("CASCADE");
       $table->timestamps();

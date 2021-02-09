@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * @property string $link
+ * @property string $uuid
  */
 class PayLinkTemplate extends Model {
   use ModelTrait;

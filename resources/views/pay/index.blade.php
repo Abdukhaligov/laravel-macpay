@@ -4,11 +4,11 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width"/>
   <title>GmodLA &#8250; Donate</title>
-  <link href="css/bootstrap.min.css" rel="stylesheet">
-  <link href="css/theme.css" rel="stylesheet">
+  <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
+  <link href="{{ asset('css/theme.css') }}" rel="stylesheet">
 
-  <script type="text/javascript" src="js/jquery.min.js"></script>
-  <script type="text/javascript" src="js/bb.min.js"></script>
+  <script type="text/javascript" src="{{ asset('js/jquery.min.js') }}"></script>
+  <script type="text/javascript" src="{{ asset('js/bb.min.js') }}"></script>
   <script type="text/javascript">
     function validate2(val) {
       v1 = document.getElementById("steamid");
@@ -66,69 +66,74 @@
 
 <body>
 <div class="footer__logoflex">
-  <img src="img/logo_shadow.png" alt="">
+  <img src="{{ asset('img/logo_shadow.png') }}" alt="">
 </div>
 
-<div class="container-fluid px-1 py-5 mx-auto">
-  <div class="row d-flex justify-content-center">
-    <div class="col-xl-5 col-lg-6 col-md-7">
-      <div class="card b-0">
-        <h3 class="heading">GmodLA Donate</h3>
-        <p class="desc">Наш проект, как все, нуждается в материальной помощи.
-          Благодаря вашей поддержке мы можем спокойно арендовать оборудование для игровых серверов и совершенствовать
-          проект в целом.
-          Именно по этим причинам мы предоставляем за ваши пожертвования особые донат баллы на игровом сервере для вас.
-        </p>
-        <fieldset class="show">
-          <div class="form-card">
-            <h5 class="sub-heading mb-4">Внимание</h5>
-            <p class="desc">
-              Деньги, потраченные на пожертвование сервера, <span class="yellow-text">не возвращаются ни при каких обстоятельствах.</span>
-              Попытки любых махинаций или ввод Администрации в заблуждение наказываются без возмездной блокировкой на
-              проекте.
-              Переводы начисленных балов (например, с одного сервера на другой) или изменение суммы невозможны.
-            </p>
-            <label class="text-danger mb-3" id="reminder">Все поля должны быть заполнены</label>
-            <div class="form-group"><label class="form-control-label">Ваш SteamID:</label>
-              <input type="text" id="steamid"
-                     name="steamid"
-                     value="{{$data["steamId"]}}"
-                     placeholder=""
-                     class="form-control"
-                     onblur="validate2(1)">
-            </div>
-            <div class="form-group"><label class="form-control-label">Сервер:</label>
-              <div class="select mb-3">
-                <select name="server" class="form-control" onblur="validate2(2)">
-                  @foreach($servers as $server)
-                    <option
-                      {{($server->id == $data["serverId"]) ? 'selected' : ''}} value="{{$server->id}}">{{$server->name}}</option>
-                  @endforeach
-                </select>
-              </div>
-              <div class="form-group"><label class="form-control-label">Сумма:</label>
-                <input type="text" id="summ"
-                       name="summ" placeholder=""
-                       value="{{$data["amount"]}}"
+<form method="POST" action="{{route('pay.check')}}">
+  @csrf
+  <div class="container-fluid px-1 py-5 mx-auto">
+    <div class="row d-flex justify-content-center">
+      <div class="col-xl-5 col-lg-6 col-md-7">
+        <div class="card b-0">
+          <h3 class="heading">GmodLA Donate</h3>
+          <p class="desc">Наш проект, как все, нуждается в материальной помощи.
+            Благодаря вашей поддержке мы можем спокойно арендовать оборудование для игровых серверов и совершенствовать
+            проект в целом.
+            Именно по этим причинам мы предоставляем за ваши пожертвования особые донат баллы на игровом сервере для вас.
+          </p>
+          <fieldset class="show">
+            <div class="form-card">
+              <h5 class="sub-heading mb-4">Внимание</h5>
+              <p class="desc">
+                Деньги, потраченные на пожертвование сервера, <span class="yellow-text">не возвращаются ни при каких обстоятельствах.</span>
+                Попытки любых махинаций или ввод Администрации в заблуждение наказываются без возмездной блокировкой на
+                проекте.
+                Переводы начисленных балов (например, с одного сервера на другой) или изменение суммы невозможны.
+              </p>
+              <label class="text-danger mb-3" id="reminder">Все поля должны быть заполнены</label>
+              <div class="form-group"><label class="form-control-label">Ваш SteamID:</label>
+                <input type="text" id="steamid"
+                       name="steamId"
+                       required
+                       value="{{$data["steamId"]}}"
+                       placeholder=""
                        class="form-control"
-                       onblur="validate2(3)">
+                       onblur="validate2(1)">
               </div>
+              <div class="form-group"><label class="form-control-label">Сервер:</label>
+                <div class="select mb-3">
+                  <select name="serverId" class="form-control" onblur="validate2(2)">
+                    @foreach($servers as $server)
+                      <option
+                        {{($server->id == $data["serverId"]) ? 'selected' : ''}} value="{{$server->id}}">{{$server->name}}</option>
+                    @endforeach
+                  </select>
+                </div>
+                <div class="form-group"><label class="form-control-label">Сумма:</label>
+                  <input type="text" id="summ"
+                         required
+                         name="amount" placeholder=""
+                         value="{{$data["amount"]}}"
+                         class="form-control"
+                         onblur="validate2(3)">
+                </div>
+              </div>
+              <div class="form-check">
+                <input required name="acceptPolicy" class="form-check-input" type="checkbox" id="gridCheck1">
+                <label class="form-check-label" for="gridCheck1">
+                  Я согласен со <a target="_blank" href="{{route('pay.policy')}}" class="yellow-text"> всеми условиями
+                    пожертвования
+                    проекту.</a>
+                </label>
+              </div>
+              <button class="btn-block btn-primary" onclick="validate2(0)">Перейти к оплате</button>
             </div>
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" id="gridCheck1">
-              <label class="form-check-label" for="gridCheck1">
-                Я согласен со <a target="_blank" href="{{route('pay.policy')}}" class="yellow-text"> всеми условиями
-                  пожертвования
-                  проекту.</a>
-              </label>
-            </div>
-            <button class="btn-block btn-primary" onclick="validate2(0)">Перейти к оплате</button>
-          </div>
-        </fieldset>
+          </fieldset>
+        </div>
       </div>
     </div>
   </div>
-</div>
+</form>
 
 <footer>
   <div class="container">
