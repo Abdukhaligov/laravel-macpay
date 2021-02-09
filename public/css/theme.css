@@ -1,0 +1,144 @@
+body {
+    color: #000;
+    overflow-x: hidden;
+    height: 100%;
+    background: linear-gradient(-25deg, #FF9A09 49.9%, #1E1E1E 50%);
+    background-repeat: no-repeat;
+	background-color: #1E1E1E;
+	background-attachment: fixed;
+	background-size: contain   
+}
+
+.card {
+    background-color: #252525;
+    border-radius: 25px;
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+    padding: 40px;
+    z-index: 0
+}
+
+.text-danger{
+	display: none;
+	position: relative
+}
+
+.heading {
+    font-weight: normal;
+	color: #ffffff
+}
+
+.desc {
+    font-size: 14px;
+	color: #c2c2c2
+}
+
+.form-control
+{
+	background-color: #1d1d1d;
+    border: 1px solid #252525;
+	color: #ffffff;
+}
+
+.form-control-label
+{
+	color: #c2c2c2
+}
+
+.form-control:focus{color:#ffffff; background-color:#272727;border-color:#fd3b00;outline:0;box-shadow:0 0 0 .2rem rgba(0,123,255,.25)}
+
+.form-check-label {
+    color: #ffffff
+}
+
+.form-check {
+	padding: 0px 25px 15px 25px
+}
+
+.sub-heading {
+    font-weight: 500;
+	color: #ffffff
+}
+
+.yellow-text {
+    color: #FF9A09
+}
+
+.card-block {
+    border: 1px solid #252525;
+    width: 45%;
+    margin: 2.5%;
+    padding: 20px 25px 15px 25px
+}
+
+a:hover {
+    color: #ff4800;
+    text-decoration: underline;
+}
+
+.btn-primary{
+	background-color: #ff4800;
+    border: 1px solid #252525;
+	color: #fff;
+}
+
+.btn-primary:hover {
+    color: #ff4800;
+    background-color: #fff;
+    border: 1px solid #252525;
+}
+
+footer {
+    padding-bottom: 30px;
+}
+
+.footer__copy {
+    text-align: center;
+    color: #555555;
+	text-shadow: #fff;
+    font-size: 14px;
+}
+
+.container {
+    width: 1380px;
+    margin: 0 auto;
+    position: relative;
+}
+
+.footer__logoflex {
+    text-align: center;
+    color: #bababa;
+    font-size: 14px;
+}
+
+select:focus,
+input:focus,
+textarea:focus {
+    -moz-box-shadow: none !important;
+    -webkit-box-shadow: none !important;
+    box-shadow: none !important;
+    border: 1px solid #FF9A09!important;
+    outline-width: 0
+}
+
+button:focus {
+    -moz-box-shadow: none !important;
+    -webkit-box-shadow: none !important;
+    box-shadow: none !important;
+    outline-width: 0
+}
+
+textarea {
+    height: 100px
+}
+
+button {
+    width: 120px;
+    letter-spacing: 2px
+}
+
+.btn-block {
+    border-radius: 5px;
+    height: 50px;
+    font-weight: 500;
+    cursor: pointer
+}

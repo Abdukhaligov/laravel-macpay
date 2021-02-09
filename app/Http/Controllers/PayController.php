@@ -1,0 +1,15 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+
+class PayController extends Controller {
+  public function index() {
+    return view('pay.index');
+  }
+
+  public function policyAndPolitics() {
+    return view('pay.policy');
+  }
+}
