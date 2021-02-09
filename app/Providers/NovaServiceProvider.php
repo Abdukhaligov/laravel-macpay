@@ -39,7 +39,9 @@ class NovaServiceProvider extends NovaApplicationServiceProvider {
   }
 
   public function tools() {
-    return [];
+    return [
+      \App\Tools\NovaPermissionTool\NovaPermissionTool::make(),
+    ];
   }
 
   public function register() {
