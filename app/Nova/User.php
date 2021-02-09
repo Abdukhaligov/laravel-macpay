@@ -44,7 +44,7 @@ class User extends Resource {
         ->updateRules('nullable', 'string', 'min:8'),
 
       MorphToMany::make('Roles', 'roles', Role::class),
-      
+
       MorphToMany::make('Permissions', 'permissions', Permission::class),
     ];
   }
