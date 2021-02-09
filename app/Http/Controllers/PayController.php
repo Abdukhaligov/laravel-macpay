@@ -41,8 +41,8 @@ class PayController extends Controller {
       "o" => $PAYMENT_ID,
       "s" => $sign,
       "cf" => [
-        "steam_id" => $request->steamId,
-        "server_id" => $request->serverId,
+        "steam_id" => $request->steam_d,
+        "server_id" => $request->server_d,
       ]
     ];
 
@@ -63,7 +63,7 @@ class PayController extends Controller {
 
     EnotApi::create([
       "response" => $request->toArray(),
-      "success" => $sign != $request->sign_2,
+      "success" => $sign == $request->sign_2,
       "type" => EnotApi::RESPONSE
     ]);
 
