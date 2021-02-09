@@ -32,7 +32,8 @@ class UserAndRoleAndPermissionSeeder extends Seeder{
       "password" => '$2y$10$ngEqkacl5afq1W.6H2nd4eLdhQmvHUagfqKhklSd7C4BoHUfMK.Gq'
     ]);
 
-    User::create([
+    /** @var User $adminUser */
+    $adminUser = User::create([
       "first_name" => "Hikmat",
       "last_name" => "Abdukhaligov",
       "email" => "admin@site.com",
@@ -40,5 +41,6 @@ class UserAndRoleAndPermissionSeeder extends Seeder{
     ]);
 
     if ($rootUser) $rootUser->assignRole('root');
+    if ($adminUser) $adminUser->assignRole('admin');
   }
 }
