@@ -58,7 +58,7 @@ class Role extends Resource {
     $userResource = Nova::resourceForModel(getModelForGuard($this->guard_name));
 
     return [
-      ID::make()->sortable(),
+      ID::make(__('ID'), 'id')->sortable(),
 
       Text::make(__('roles.name'), 'name')
         ->rules(['required', 'string', 'max:255'])
