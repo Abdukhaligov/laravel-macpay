@@ -69,7 +69,7 @@
   <img src="{{ asset('img/logo_shadow.png') }}" alt="">
 </div>
 
-<form method="POST" action="{{route('pay.check')}}">
+<form method="POST" action="{{route('pay.sendRequestToEnot')}}">
   @csrf
   <div class="container-fluid px-1 py-5 mx-auto">
     <div class="row d-flex justify-content-center">
