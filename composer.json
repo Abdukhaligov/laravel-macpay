@@ -1,11 +1,17 @@
 {
-  "name": "laravel/laravel",
+  "name": "abdukhaligov/laravel-macpay",
   "type": "project",
-  "description": "The Laravel Framework.",
+  "description": "Online payment with Enot.io",
   "keywords": [
-    "framework", "laravel"
+    "Enot.io"
   ],
   "license": "MIT",
+  "repositories": [
+    {
+      "type": "path",
+      "url": "./nova"
+    }
+  ],
   "require": {
     "php": "^7.3",
     "fideloper/proxy": "^4.4",
