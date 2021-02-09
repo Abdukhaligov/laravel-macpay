@@ -67,14 +67,14 @@ class PayController extends Controller {
     ]);
 
     if ($sign != $request->sign_2) {
-      EnotTransaction::create([
-        "steam_id" => $request->custom_field["steam_id"],
-        "server_id" => $request->custom_field["server_id"],
-        "amount" => $request->amount,
-      ]);
-      
       return view('pay.reject');
     }
+
+    EnotTransaction::create([
+      "steam_id" => $request->custom_field["steam_id"],
+      "server_id" => $request->custom_field["server_id"],
+      "amount" => $request->amount,
+    ]);
 
     return view('pay.success');
   }
