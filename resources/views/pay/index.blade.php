@@ -93,21 +93,26 @@
               <label class="text-danger mb-3" id="reminder">Все поля должны быть заполнены</label>
               <div class="form-group"><label class="form-control-label">Ваш SteamID:</label>
                 <input type="text" id="steamid"
-                       name="steamId"
+                       name="steam_id"
                        required
-                       value="{{$data["steamId"]}}"
+                       value="{{$data["steam_id"]}}"
                        placeholder=""
                        class="form-control"
                        onblur="validate2(1)">
+                @error('steam_id')
+                  <div style="display: block;" class="col-form-label text-danger">{{$message}}</div>
+                @enderror
               </div>
               <div class="form-group"><label class="form-control-label">Сервер:</label>
                 <div class="select mb-3">
-                  <select name="serverId" class="form-control" onblur="validate2(2)">
-                    @foreach($servers as $server)
-                      <option
-                        {{($server->id == $data["serverId"]) ? 'selected' : ''}} value="{{$server->id}}">{{$server->name}}</option>
+                  <select name="server_id" required class="form-control" onblur="validate2(2)">
+                  @foreach($servers as $server)
+                      <option {{($server->id == $data["server_id"]) ? 'selected' : ''}} value="{{$server->id}}">{{$server->name}}</option>
                     @endforeach
                   </select>
+                  @error('server_id')
+                    <div style="display: block;" class="col-form-label text-danger">{{$message}}</div>
+                  @enderror
                 </div>
                 <div class="form-group"><label class="form-control-label">Сумма:</label>
                   <input type="text" id="summ"
@@ -116,6 +121,9 @@
                          value="{{$data["amount"]}}"
                          class="form-control"
                          onblur="validate2(3)">
+                  @error('amount')
+                    <div style="display: block;" class="col-form-label text-danger">{{$message}}</div>
+                  @enderror
                 </div>
               </div>
               <div class="form-check">

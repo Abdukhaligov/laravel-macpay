@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\EnotSendRequest;
 use App\Models\EnotApi;
 use App\Models\EnotTransaction;
 use App\Models\PayLinkTemplate;
@@ -14,8 +15,8 @@ class PayController extends Controller {
     $servers = Server::all();
 
     $data = [
-      "steamId" => $request->steamId ?? '',
-      "serverId" => $request->serverId ?? 0,
+      "steam_id" => $request->steam_id ?? '',
+      "server_id" => $request->server_id ?? 0,
       "amount" => $request->amount ?? ''
     ];
 
@@ -26,7 +27,7 @@ class PayController extends Controller {
     return view('pay.policy');
   }
 
-  public function sendRequestToEnot(Request $request) {
+  public function sendRequestToEnot(EnotSendRequest $request) {
     $MERCHANT_ID = config('enot.merchant_id');  // ID магазина
     $SECRET_WORD = config('enot.secret_word');  // Секретный ключ
     $ORDER_AMOUNT = $request->amount;               // Сумма заказа
@@ -87,8 +88,8 @@ class PayController extends Controller {
     $servers = Server::all();
 
     $data = [
-      "steamId" => $template->steam_id ?? '',
-      "serverId" => $template->server_id ?? 0,
+      "steam_id" => $template->steam_id ?? '',
+      "server_id" => $template->server_id ?? 0,
       "amount" => $template->amount ?? ''
     ];
 
