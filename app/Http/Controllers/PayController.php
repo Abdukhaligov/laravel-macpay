@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\EnotApi;
+use App\Models\EnotTransaction;
 use App\Models\PayLinkTemplate;
 use App\Models\Server;
 use Illuminate\Http\Request;
@@ -37,7 +38,11 @@ class PayController extends Controller {
       "m" => $MERCHANT_ID,
       "oa" => $ORDER_AMOUNT,
       "o" => $PAYMENT_ID,
-      "s" => $sign
+      "s" => $sign,
+      "cf" => [
+        "steam_id" => $request->steamId,
+        "server_id" => $request->serverId,
+      ]
     ];
 
     EnotApi::create([
@@ -62,6 +67,12 @@ class PayController extends Controller {
     ]);
 
     if ($sign != $request->sign_2) {
+      EnotTransaction::create([
+        "steam_id" => $request->custom_field["steam_id"],
+        "server_id" => $request->custom_field["server_id"],
+        "amount" => $request->amount,
+      ]);
+      
       return view('pay.reject');
     }
 
