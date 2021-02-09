@@ -78,47 +78,53 @@
           Благодаря вашей поддержке мы можем спокойно арендовать оборудование для игровых серверов и совершенствовать
           проект в целом.
           Именно по этим причинам мы предоставляем за ваши пожертвования особые донат баллы на игровом сервере для вас.
-          <fieldset class="show">
-            <div class="form-card">
-              <h5 class="sub-heading mb-4">Внимание</h5>
-        <p class="desc">
-          Деньги, потраченные на пожертвование сервера, <span class="yellow-text">не возвращаются ни при каких обстоятельствах.</span>
-          Попытки любых махинаций или ввод Администрации в заблуждение наказываются без возмездной блокировкой на
-          проекте.
-          Переводы начисленных балов (например, с одного сервера на другой) или изменение суммы невозможны.
         </p>
-        <label class="text-danger mb-3" id="reminder" name="reminder">Все поля должны быть заполнены</label>
-        <div class="form-group"><label class="form-control-label">Ваш SteamID:</label>
-          <input type="text" id="steamid"
-                 name="steamid"
-                 placeholder=""
-                 class="form-control"
-                 onblur="validate2(1)">
-        </div>
-        <div class="form-group"><label class="form-control-label">Сервер:</label>
-          <div class="select mb-3"><select name="server" class="form-control" onblur="validate2(2)">
-              <option>Tokyo 1</option>
-              <option>Tokyo 2</option>
-              <option>Los Angeles</option>
-              <option>Las Vegas</option>
-              <option>Moscow</option>
-              <option>New York</option>
-            </select></div>
-          <div class="form-group"><label class="form-control-label">Сумма:</label>
-            <input type="text" id="summ"
-                   name="summ" placeholder=""
-                   class="form-control"
-                   onblur="validate2(3)"></div>
-        </div>
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox" id="gridCheck1">
-          <label class="form-check-label" for="gridCheck1">
-            Я согласен со <a target="_blank" href="{{ route('pay.policy') }}" class="yellow-text"> всеми условиями
-              пожертвования
-              проекту.</a>
-          </label>
-        </div>
-        <button class="btn-block btn-primary" onclick="validate2(0)">Перейти к оплате</button>
+        <fieldset class="show">
+          <div class="form-card">
+            <h5 class="sub-heading mb-4">Внимание</h5>
+            <p class="desc">
+              Деньги, потраченные на пожертвование сервера, <span class="yellow-text">не возвращаются ни при каких обстоятельствах.</span>
+              Попытки любых махинаций или ввод Администрации в заблуждение наказываются без возмездной блокировкой на
+              проекте.
+              Переводы начисленных балов (например, с одного сервера на другой) или изменение суммы невозможны.
+            </p>
+            <label class="text-danger mb-3" id="reminder">Все поля должны быть заполнены</label>
+            <div class="form-group"><label class="form-control-label">Ваш SteamID:</label>
+              <input type="text" id="steamid"
+                     name="steamid"
+                     value="{{$data["steamId"]}}"
+                     placeholder=""
+                     class="form-control"
+                     onblur="validate2(1)">
+            </div>
+            <div class="form-group"><label class="form-control-label">Сервер:</label>
+              <div class="select mb-3">
+                <select name="server" class="form-control" onblur="validate2(2)">
+                  @foreach($servers as $server)
+                    <option
+                      {{($server->id == $data["serverId"]) ? 'selected' : ''}} value="{{$server->id}}">{{$server->name}}</option>
+                  @endforeach
+                </select>
+              </div>
+              <div class="form-group"><label class="form-control-label">Сумма:</label>
+                <input type="text" id="summ"
+                       name="summ" placeholder=""
+                       value="{{$data["amount"]}}"
+                       class="form-control"
+                       onblur="validate2(3)">
+              </div>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="gridCheck1">
+              <label class="form-check-label" for="gridCheck1">
+                Я согласен со <a target="_blank" href="{{route('pay.policy')}}" class="yellow-text"> всеми условиями
+                  пожертвования
+                  проекту.</a>
+              </label>
+            </div>
+            <button class="btn-block btn-primary" onclick="validate2(0)">Перейти к оплате</button>
+          </div>
+        </fieldset>
       </div>
     </div>
   </div>
