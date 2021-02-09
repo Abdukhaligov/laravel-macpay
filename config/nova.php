@@ -13,7 +13,7 @@ return [
 
   'url' => env('APP_URL', '/'),
 
-  'path' => '/adminpanel',
+  'path' => '/nova',
 
   'guard' => env('NOVA_GUARD', null),
 
