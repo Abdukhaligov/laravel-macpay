@@ -61,9 +61,9 @@ class ApiController extends Controller {
         "oid" => $transactionId,
       ]))->json();
 
-      if (count(EnotTransaction::where('order_id', $transactionId)->get())){
-        return response()->json(["status" => "fail", "message" => "orderId already in DB"]);
-      }
+      //if (count(EnotTransaction::where('order_id', $transactionId)->get())){
+      //  return response()->json(["status" => "fail", "message" => "orderId already in DB"]);
+      //}
 
       $originalAmount = $response["originalAmount"] = $enotApi->form["amount"] ?? '';
       $paymentAmount = $response["paymentAmount"] = $paymentInfo["amount"] ?? '';
