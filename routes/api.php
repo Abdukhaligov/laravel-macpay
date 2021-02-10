@@ -24,7 +24,7 @@ Route::get('sync-transactions', function (Request $request) {
   $token = 'Jb?c4MBpbKR4DmyaLERU=55yJKk';
 
   if ($request->token == $token) {
-    $orderIds = [444545];
+    $orderIds = [];
     $successOrders = [];
     $response["orders"] = [];
 
