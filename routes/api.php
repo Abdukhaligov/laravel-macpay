@@ -13,7 +13,7 @@ Route::get('get-transactions', function (Request $request) {
   $token = 'Jb?c4MBpbKR4DmyaLERU=55yJKk';
 
   if ($request->token == $token) {
-    return response()->json(EnotTransaction::where('id')->orderByDesc('id')->limit(50)->get());
+    return response()->json(EnotTransaction::orderBy('id', 'DESC')->limit(50)->get());
   } else {
     return response()->json(["message" => "unauthorized"], JsonResponse::HTTP_UNAUTHORIZED);
   }
