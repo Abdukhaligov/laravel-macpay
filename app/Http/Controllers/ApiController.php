@@ -69,17 +69,16 @@ class ApiController extends Controller {
       }
 
       $originalAmount = $response["originalAmount"] = $enotApi->form["amount"] ?? '';
-      $paymentAmount = $response["paymentAmount"] = $paymentInfo["amount"] ?? '';
+      $paymentAmount = $response["paymentAmount"] = $paymentInfo["credited"] ?? '';
       $orderId = $response["orderId"] = $paymentInfo["merchant_id"] ?? '';
 
-      if ($originalAmount && $paymentAmount && $orderId
-        && (integer) $originalAmount == (integer) $paymentAmount) {
+      if ($originalAmount && $paymentAmount && $orderId && $paymentAmount) {
         $response["status"] = "success";
 
         EnotTransaction::create([
           "steam_id" => $paymentInfo["custom_field"]["steam_id"] ?? '',
           "server_id" => $paymentInfo["custom_field"]["server_id"] ?? '',
-          "amount" => $paymentAmount,
+          "amount" => $paymentInfo["amount"],
           "order_id" => $orderId
         ]);
       } else {
