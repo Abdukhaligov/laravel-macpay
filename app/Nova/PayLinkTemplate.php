@@ -13,9 +13,11 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 class PayLinkTemplate extends Resource {
   public static $model = \App\Models\PayLinkTemplate::class;
   public static $title = 'id';
+  public static $displayInNavigation = false;
   public static $search = [
     'id',
   ];
+
 
   public function fields(Request $request) {
     return [
