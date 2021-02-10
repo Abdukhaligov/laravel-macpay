@@ -36,7 +36,7 @@ class ApiController extends Controller {
     ];
 
     EnotApi::create([
-      "form" => $request->toArray(), "request" => $formData, "type" => EnotApi::REQUEST
+      "form" => $request->toArray(), "request" => $formData, "type" => EnotApi::REQUEST, "ip" => $request->ip()
     ]);
 
     $response["url"] = $url = "https://enot.io/pay?".http_build_query($formData);
@@ -49,19 +49,22 @@ class ApiController extends Controller {
       $response["request"] = $request->toArray();
 
       $response["transactionOriginal"] = $enotApi = EnotApi::where('type', EnotApi::REQUEST)
+        ->where('ip', $request->ip())
         ->orderByDesc('created_at')
         ->get()
         ->first();
 
       $transactionId = $enotApi->request["o"];
 
-      $response["paymentInfo"] = $paymentInfo = (Http::get('https://enot.io/request/payment-info', [
+      $formData = [
         "api_key" => config('enot.api_key'),
         "email" => config('enot.email'),
         "oid" => $transactionId,
-      ]))->json();
+      ];
 
-      if (count(EnotTransaction::where('order_id', $transactionId)->get())){
+      $response["paymentInfo"] = $paymentInfo = (Http::get('https://enot.io/request/payment-info', $formData))->json();
+
+      if (count(EnotTransaction::where('order_id', $transactionId)->get())) {
         return response()->json(["status" => "fail", "message" => "orderId already in DB"]);
       }
 
@@ -82,6 +85,10 @@ class ApiController extends Controller {
       } else {
         $response["status"] = "fail";
       }
+
+      EnotApi::create([
+        "request" => $formData, "type" => EnotApi::RESPONSE, "ip" => $request->ip()
+      ]);
 
       return response()->json($response);
     } catch (\Exception $e) {

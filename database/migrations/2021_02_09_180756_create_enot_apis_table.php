@@ -8,6 +8,7 @@ class CreateEnotApisTable extends Migration {
   public function up() {
     Schema::create('enot_apis', function (Blueprint $table) {
       $table->id();
+      $table->string('ip')->nullable();
       $table->boolean("type")->default(false);
       $table->boolean("success")->default(true);
       $table->json('form')->nullable();

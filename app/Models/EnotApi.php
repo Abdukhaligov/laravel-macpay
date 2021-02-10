@@ -10,7 +10,7 @@ class EnotApi extends Model {
   const REQUEST = 0;
   const RESPONSE = 1;
 
-  protected $fillable = ["form", "request", "response", "type", "success"];
+  protected $fillable = ["form", "request", "response", "type", "success", "ip"];
 
   protected $casts = [
     "form" => "array",
