@@ -7,6 +7,7 @@ use App\Models\EnotApi;
 use App\Models\EnotTransaction;
 use App\Models\Server;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 
 class ApiController extends Controller {
   public function serverList() {
@@ -44,31 +45,47 @@ class ApiController extends Controller {
   }
 
   public function getResponseFromEnot(Request $request) {
-    $response["request"] = $request->toArray();
+    try {
+      $response["request"] = $request->toArray();
 
-    $merchant = $request->merchant; // id вашего магазина
-    $secret_word2 = config('enot.secret_word_2'); // секретный ключ 2
+      $response["transactionOriginal"] = $enotApi = EnotApi::where('type', EnotApi::REQUEST)
+        ->orderByDesc('created_at')
+        ->get()
+        ->first();
 
-    $sign = md5($merchant.':'.$request->amount.':'.$secret_word2.':'.$request->merchant_id);
+      $transactionId = $enotApi->request["o"];
 
-    EnotApi::create([
-      "response" => $request->toArray(),
-      "success" => $sign == $request->sign_2,
-      "type" => EnotApi::RESPONSE
-    ]);
+      $response["paymentInfo"] = $paymentInfo = (Http::get('https://enot.io/request/payment-info', [
+        "api_key" => config('enot.api_key'),
+        "email" => config('enot.email'),
+        "oid" => $transactionId,
+      ]))->json();
 
-    if ($sign == $request->sign_2) {
-      $response["status"] = "success";
+      if (count(EnotTransaction::where('order_id', $transactionId)->get())){
+        return response()->json(["status" => "fail", "message" => "orderId already in DB"]);
+      }
 
-      EnotTransaction::create([
-        "steam_id" => $request->custom_field["steam_id"] ?? '',
-        "server_id" => $request->custom_field["server_id"] ?? '',
-        "amount" => $request->amount ?? '',
-      ]);
-    } else {
-      $response["status"] = "fail";
+      $originalAmount = $response["originalAmount"] = $enotApi->form["amount"] ?? '';
+      $paymentAmount = $response["paymentAmount"] = $paymentInfo["amount"] ?? '';
+      $orderId = $response["orderId"] = $paymentInfo["merchant_id"] ?? '';
+
+      if ($originalAmount && $paymentAmount && $orderId
+        && (integer) $originalAmount == (integer) $paymentAmount) {
+        $response["status"] = "success";
+
+        EnotTransaction::create([
+          "steam_id" => $paymentInfo["custom_field"]["steam_id"] ?? '',
+          "server_id" => $paymentInfo["custom_field"]["server_id"] ?? '',
+          "amount" => $paymentAmount,
+          "order_id" => $orderId
+        ]);
+      } else {
+        $response["status"] = "fail";
+      }
+
+      return response()->json($response);
+    } catch (\Exception $e) {
+      return response()->json(["status" => "fail", "message" => $e->getMessage()]);
     }
-
-    return response()->json($response);
   }
 }

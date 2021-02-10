@@ -19,4 +19,8 @@ class EnotApi extends Model {
     "type" => "boolean",
     "success" => "boolean"
   ];
+
+  public function getTypeAttribute($value) {
+    return $value ? "response" : "request";
+  }
 }

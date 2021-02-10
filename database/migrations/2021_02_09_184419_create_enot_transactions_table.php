@@ -10,6 +10,7 @@ class CreateEnotTransactionsTable extends Migration {
       $table->id();
       $table->string('steam_id')->nullable();
       $table->string('amount')->nullable();
+      $table->string('order_id')->nullable();
       $table->unsignedBigInteger('server_id')->nullable();
       $table->foreign('server_id')->references('id')->on('servers')->onDelete('SET NULL');
       $table->timestamps();
