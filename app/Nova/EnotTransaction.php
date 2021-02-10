@@ -3,6 +3,7 @@
 namespace App\Nova;
 
 use Illuminate\Http\Request;
+use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Text;
@@ -25,6 +26,8 @@ class EnotTransaction extends Resource {
       Text::make('Order id', 'order_id')->sortable(),
 
       Text::make('Server id', 'server_id')->sortable(),
+
+      BelongsTo::make('Server')->sortable(),
     ];
   }
 }
