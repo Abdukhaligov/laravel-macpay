@@ -36,7 +36,8 @@ class ApiController extends Controller {
     ];
 
     EnotApi::create([
-      "form" => $request->toArray(), "request" => $formData, "type" => EnotApi::REQUEST, "ip" => $request->ip()
+      "form" => $request->toArray(), "request" => $formData, "type" => EnotApi::REQUEST,
+      "ip" => $request->ip()
     ]);
 
     $response["url"] = $url = "https://enot.io/pay?".http_build_query($formData);
@@ -48,46 +49,28 @@ class ApiController extends Controller {
     try {
       $response["request"] = $request->toArray();
 
-      $response["transactionOriginal"] = $enotApi = EnotApi::where('type', EnotApi::REQUEST)
-        ->where('ip', $request->ip())
-        ->orderByDesc('created_at')
-        ->get()
-        ->first();
+      $merchant = $request->merchant; // id вашего магазина
+      $secret_word2 = config('enot.secret_word_2'); // секретный ключ 2
 
-      $transactionId = $enotApi->request["o"];
-
-      $formData = [
-        "api_key" => config('enot.api_key'),
-        "email" => config('enot.email'),
-        "oid" => $transactionId,
-      ];
-
-      $response["paymentInfo"] = $paymentInfo = (Http::get('https://enot.io/request/payment-info', $formData))->json();
-
-      if (count(EnotTransaction::where('order_id', $transactionId)->get())) {
-        return response()->json(["status" => "fail", "message" => "orderId already in DB"]);
-      }
-
-      $originalAmount = $response["originalAmount"] = $enotApi->form["amount"] ?? '';
-      $paymentAmount = $response["paymentAmount"] = $paymentInfo["credited"] ?? '';
-      $orderId = $response["orderId"] = $paymentInfo["merchant_id"] ?? '';
-
-      if ($originalAmount && $paymentAmount && $orderId && $paymentAmount) {
-        $response["status"] = "success";
-
-        EnotTransaction::create([
-          "steam_id" => $paymentInfo["custom_field"]["steam_id"] ?? '',
-          "server_id" => $paymentInfo["custom_field"]["server_id"] ?? '',
-          "amount" => $paymentInfo["amount"],
-          "order_id" => $orderId
-        ]);
-      } else {
-        $response["status"] = "fail";
-      }
+      $sign = md5($merchant.':'.$request->amount.':'.$secret_word2.':'.$request->merchant_id);
 
       EnotApi::create([
-        "request" => $formData, "type" => EnotApi::RESPONSE, "ip" => $request->ip()
+        "response" => $request->toArray(),
+        "success" => $sign == $request->sign_2,
+        "type" => EnotApi::RESPONSE
       ]);
+
+      if ($sign != $request->sign_2) {
+        $response["status"] = "fail";
+      } else {
+        $response["status"] = "success";
+        EnotTransaction::create([
+          "steam_id" => $request->custom_field["steam_id"],
+          "server_id" => $request->custom_field["server_id"],
+          "amount" => $request->amount,
+          "order_id" => $request->merchant_id
+        ]);
+      }
 
       return response()->json($response);
     } catch (\Exception $e) {
